@@ -1,0 +1,71 @@
+DROP DATABASE locationMaison;
+
+CREATE DATABASE locationMaison;
+USE locationMaison;
+
+CREATE TABLE Utilisateur (
+    idUtilisateur INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    prenom VARCHAR(100) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    motDePasse VARCHAR(255) NOT NULL,
+    photo VARCHAR(255) UNIQUE NULL,
+    ROLE ENUM('Administrateur', 'Utilisateur') NOT NULL DEFAULT 'Utilisateur'
+);
+
+CREATE TABLE Maison (
+    idMaison INT PRIMARY KEY AUTO_INCREMENT,
+    nom VARCHAR(100) NOT NULL,
+    descriptionMaison TEXT NOT NULL,
+    village VARCHAR(100) NOT NULL,
+    pays ENUM('BE', 'FR', 'IT') NOT NULL,
+    photos JSON NULL,
+    attractionsAlentours TEXT NULL,
+    idAdministrateur INT NULL,
+    FOREIGN KEY (idAdministrateur) REFERENCES Utilisateur(idUtilisateur) ON DELETE SET NULL
+);
+
+CREATE TABLE Reservation (
+    idReservation INT PRIMARY KEY AUTO_INCREMENT,
+    idMaison INT NULL,
+    idUtilisateur INT NULL,
+    dateDebut DATE NOT NULL,
+    dateFin DATE NOT NULL,
+    statut ENUM('Confirmée', 'En attente', 'Annulée') NOT NULL,
+    datePaiementPrévu DATE NULL,
+    paiementEffectué BOOLEAN DEFAULT FALSE,
+    prix DECIMAL(10,2) NOT NULL,
+    FOREIGN KEY (idMaison) REFERENCES Maison(idMaison) ON DELETE SET NULL,
+    FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur(idUtilisateur) ON DELETE SET NULL,
+    CHECK (dateDebut < dateFin)
+);
+
+CREATE TABLE Saison (
+    idSaison INT PRIMARY KEY AUTO_INCREMENT,
+    annee YEAR NOT NULL,
+    typeSaison ENUM('Haute', 'Moyenne', 'Basse') NOT NULL,
+    dateDebut DATE NOT NULL,
+    dateFin DATE NOT NULL,
+    idMaison INT NULL,
+    FOREIGN KEY (idMaison) REFERENCES Maison(idMaison) ON DELETE SET NULL,
+    CHECK (dateDebut < dateFin)
+);
+
+CREATE TABLE Indisponibilite (
+    idIndisponibilite INT PRIMARY KEY AUTO_INCREMENT,
+    idMaison INT NULL,
+    dateDebut DATE NOT NULL,
+    dateFin DATE NOT NULL,
+    FOREIGN KEY (idMaison) REFERENCES Maison(idMaison) ON DELETE SET NULL,
+    CHECK (dateDebut < dateFin)
+);
+
+CREATE TABLE Blocage (
+    idBlocage INT PRIMARY KEY AUTO_INCREMENT,
+    idAdministrateur INT NULL,
+    idUtilisateur INT NULL,
+    dateBlocage DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    raison TEXT NOT NULL,
+    FOREIGN KEY (idAdministrateur) REFERENCES Utilisateur(idUtilisateur) ON DELETE SET NULL,
+    FOREIGN KEY (idUtilisateur) REFERENCES Utilisateur(idUtilisateur) ON DELETE SET NULL
+);
