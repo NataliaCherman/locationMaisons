@@ -1,0 +1,194 @@
+ERROR - 2025-03-12 16:01:45 --> mysqli_sql_exception: Duplicate entry 'corbeau.pale@gmail.com' for key 'email' in C:\xampp\htdocs\locationMaisons\system\Database\MySQLi\Connection.php:306
+Stack trace:
+#0 C:\xampp\htdocs\locationMaisons\system\Database\MySQLi\Connection.php(306): mysqli->query('INSERT INTO `ut...', 0)
+#1 C:\xampp\htdocs\locationMaisons\system\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `ut...')
+#2 C:\xampp\htdocs\locationMaisons\system\Database\BaseConnection.php(607): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `ut...')
+#3 C:\xampp\htdocs\locationMaisons\system\Database\BaseBuilder.php(2302): CodeIgniter\Database\BaseConnection->query('INSERT INTO `ut...', Array, false)
+#4 C:\xampp\htdocs\locationMaisons\system\Model.php(326): CodeIgniter\Database\BaseBuilder->insert()
+#5 C:\xampp\htdocs\locationMaisons\system\BaseModel.php(802): CodeIgniter\Model->doInsert(Array)
+#6 C:\xampp\htdocs\locationMaisons\system\Model.php(744): CodeIgniter\BaseModel->insert(Array, false)
+#7 C:\xampp\htdocs\locationMaisons\system\BaseModel.php(713): CodeIgniter\Model->insert(Array, false)
+#8 C:\xampp\htdocs\locationMaisons\app\Controllers\UserController.php(33): CodeIgniter\BaseModel->save(Array)
+#9 C:\xampp\htdocs\locationMaisons\system\CodeIgniter.php(941): App\Controllers\UserController->createAccount()
+#10 C:\xampp\htdocs\locationMaisons\system\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+#11 C:\xampp\htdocs\locationMaisons\system\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(NULL, Object(Config\Cache), false)
+#12 C:\xampp\htdocs\locationMaisons\index.php(79): CodeIgniter\CodeIgniter->run()
+#13 {main}
+CRITICAL - 2025-03-12 16:01:45 --> CodeIgniter\Database\Exceptions\DatabaseException: Duplicate entry 'corbeau.pale@gmail.com' for key 'email'
+in SYSTEMPATH\Database\BaseConnection.php on line 647.
+ 1 SYSTEMPATH\Database\BaseBuilder.php(2302): CodeIgniter\Database\BaseConnection->query('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (:nom:, :prenom:, :email:, :motDePasse:, :photo:)', [...], false)
+ 2 SYSTEMPATH\Model.php(326): CodeIgniter\Database\BaseBuilder->insert()
+ 3 SYSTEMPATH\BaseModel.php(802): CodeIgniter\Model->doInsert([...])
+ 4 SYSTEMPATH\Model.php(744): CodeIgniter\BaseModel->insert([...], false)
+ 5 SYSTEMPATH\BaseModel.php(713): CodeIgniter\Model->insert([...], false)
+ 6 APPPATH\Controllers\UserController.php(33): CodeIgniter\BaseModel->save([...])
+ 7 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->createAccount()
+ 8 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 9 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+10 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:01:45 --> [Caused by] CodeIgniter\Database\Exceptions\DatabaseException: Duplicate entry 'corbeau.pale@gmail.com' for key 'email'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 311.
+ 1 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (\'Cmn\', \'Nat\', \'corbeau.pale@gmail.com\', \'$2y$10$Cui13Un9ljORhwMVasIvb.TxpgkUfwx1s7USzK0/VfwI1FVDEj/wW\', NULL)')
+ 2 SYSTEMPATH\Database\BaseConnection.php(607): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (\'Cmn\', \'Nat\', \'corbeau.pale@gmail.com\', \'$2y$10$Cui13Un9ljORhwMVasIvb.TxpgkUfwx1s7USzK0/VfwI1FVDEj/wW\', NULL)')
+ 3 SYSTEMPATH\Database\BaseBuilder.php(2302): CodeIgniter\Database\BaseConnection->query('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (:nom:, :prenom:, :email:, :motDePasse:, :photo:)', [...], false)
+ 4 SYSTEMPATH\Model.php(326): CodeIgniter\Database\BaseBuilder->insert()
+ 5 SYSTEMPATH\BaseModel.php(802): CodeIgniter\Model->doInsert([...])
+ 6 SYSTEMPATH\Model.php(744): CodeIgniter\BaseModel->insert([...], false)
+ 7 SYSTEMPATH\BaseModel.php(713): CodeIgniter\Model->insert([...], false)
+ 8 APPPATH\Controllers\UserController.php(33): CodeIgniter\BaseModel->save([...])
+ 9 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->createAccount()
+10 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+11 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+12 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:01:45 --> [Caused by] mysqli_sql_exception: Duplicate entry 'corbeau.pale@gmail.com' for key 'email'
+in SYSTEMPATH\Database\MySQLi\Connection.php on line 306.
+ 1 SYSTEMPATH\Database\MySQLi\Connection.php(306): mysqli->query('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (\'Cmn\', \'Nat\', \'corbeau.pale@gmail.com\', \'$2y$10$Cui13Un9ljORhwMVasIvb.TxpgkUfwx1s7USzK0/VfwI1FVDEj/wW\', NULL)', 0)
+ 2 SYSTEMPATH\Database\BaseConnection.php(693): CodeIgniter\Database\MySQLi\Connection->execute('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (\'Cmn\', \'Nat\', \'corbeau.pale@gmail.com\', \'$2y$10$Cui13Un9ljORhwMVasIvb.TxpgkUfwx1s7USzK0/VfwI1FVDEj/wW\', NULL)')
+ 3 SYSTEMPATH\Database\BaseConnection.php(607): CodeIgniter\Database\BaseConnection->simpleQuery('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (\'Cmn\', \'Nat\', \'corbeau.pale@gmail.com\', \'$2y$10$Cui13Un9ljORhwMVasIvb.TxpgkUfwx1s7USzK0/VfwI1FVDEj/wW\', NULL)')
+ 4 SYSTEMPATH\Database\BaseBuilder.php(2302): CodeIgniter\Database\BaseConnection->query('INSERT INTO `utilisateur` (`nom`, `prenom`, `email`, `motDePasse`, `photo`) VALUES (:nom:, :prenom:, :email:, :motDePasse:, :photo:)', [...], false)
+ 5 SYSTEMPATH\Model.php(326): CodeIgniter\Database\BaseBuilder->insert()
+ 6 SYSTEMPATH\BaseModel.php(802): CodeIgniter\Model->doInsert([...])
+ 7 SYSTEMPATH\Model.php(744): CodeIgniter\BaseModel->insert([...], false)
+ 8 SYSTEMPATH\BaseModel.php(713): CodeIgniter\Model->insert([...], false)
+ 9 APPPATH\Controllers\UserController.php(33): CodeIgniter\BaseModel->save([...])
+10 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->createAccount()
+11 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+12 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+13 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:22:38 --> Error: Class "App\Controllers\UserModels" not found
+in APPPATH\Controllers\UserController.php on line 44.
+ 1 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:23:35 --> Error: Class "App\Controllers\UserModels" not found
+in APPPATH\Controllers\UserController.php on line 44.
+ 1 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:25:34 --> Error: Class "App\Controllers\UserModels" not found
+in APPPATH\Controllers\UserController.php on line 44.
+ 1 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 2 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 3 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 4 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:27:15 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:27:27 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:28:55 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:32:17 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:32:39 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:38:36 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:40:14 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:42:00 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:44:13 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:44:51 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:45:04 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:46:35 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:47:28 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:55:45 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:57:42 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:57:54 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
+CRITICAL - 2025-03-12 16:58:50 --> ErrorException: Undefined array key "passwordHash"
+in APPPATH\Controllers\UserController.php on line 50.
+ 1 APPPATH\Controllers\UserController.php(50): CodeIgniter\Debug\Exceptions->errorHandler(2, 'Undefined array key "passwordHash"', 'C:\\xampp\\htdocs\\locationMaisons\\app\\Controllers\\UserController.php', 50)
+ 2 SYSTEMPATH\CodeIgniter.php(941): App\Controllers\UserController->login()
+ 3 SYSTEMPATH\CodeIgniter.php(502): CodeIgniter\CodeIgniter->runController(Object(App\Controllers\UserController))
+ 4 SYSTEMPATH\CodeIgniter.php(361): CodeIgniter\CodeIgniter->handleRequest(null, Object(Config\Cache), false)
+ 5 FCPATH\index.php(79): CodeIgniter\CodeIgniter->run()
