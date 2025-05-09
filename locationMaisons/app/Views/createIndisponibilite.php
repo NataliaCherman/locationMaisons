@@ -4,6 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer une Indisponibilité</title>
+
+    <script>
+        // Fonction pour mettre à jour la date minimale
+        document.addEventListener('DOMContentLoaded', function() {
+            const today = new Date().toISOString().split('T')[0]; // Obtenir la date d'aujourd'hui au format YYYY-MM-DD
+            document.getElementById('dateDebut').setAttribute('min', today);
+        });
+    </script>
 </head>
 <body>
     <?= view('navBar'); ?>

@@ -11,7 +11,7 @@ class Home extends BaseController
 
     public function createAccount(): string
     {
-        return view('create_account');
+        return view('createAccount');
     }
 
     public function login(): string

@@ -6,6 +6,9 @@
     <title>Succès - Création de Compte</title>
     <!-- Lien vers Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers Bootstrap JS et Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 </head>
 <body>
 
@@ -26,17 +29,13 @@
                     <h3 class="card-title">Félicitations !</h3>
                     <p class="card-text">Votre compte a été créé avec succès. Vous pouvez maintenant vous connecter et accéder à votre espace personnel.</p>
                     <!-- Bouton pour rediriger l'utilisateur -->
-                    <a href="<?= base_url('/se_connecter')?>" class="btn btn-primary">Se connecter</a>
+                    <a href="<?= base_url('/login')?>" class="btn btn-primary">Se connecter</a>
                     <a href="../locationMaisons" class="btn btn-link">Retour à l'accueil</a>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
-<!-- Lien vers Bootstrap JS et Popper.js -->
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js"></script>
 
 </body>
 </html>

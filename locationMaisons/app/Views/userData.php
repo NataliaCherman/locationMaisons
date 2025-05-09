@@ -5,61 +5,90 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Informations utilisateur</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <style>
+        .section-heading {
+            font-size: 1.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #ddd;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 <?= view('navBar'); ?>
 
-<div class="container mt-5">
-    <h1 class="text-center mb-4">Mes Informations :</h1>
+<div class="container mt-5 mb-5">
+    <h1 class="section-heading">Mes Informations :</h1>
 
     <?php if (session()->has('idUtilisateur')): ?>
         <div class="row justify-content-center">
-            <div class="col-md-6">
+            <div class="col-md-10">
                 <div class="card shadow-lg p-4">
+                    <?php if (session()->getFlashdata('success')): ?>
+                        <div class="alert alert-success text-center">
+                            <?= session()->getFlashdata('success'); ?>
+                        </div>
+                    <?php endif; ?>
+                    <?php if (session()->getFlashdata('error')): ?>
+                        <div class="alert alert-danger text-center">
+                            <?= session()->getFlashdata('error'); ?>
+                        </div>
+                    <?php endif; ?>
+
+
                     <form action="<?= base_url('userData') ?>" method="post" enctype="multipart/form-data">
+                        <?= csrf_field(); ?>
+                        <div class="row">
+                            <!-- Colonne gauche : photo -->
+                            <div class="col-md-4 text-center border-end">
+                                <label class="form-label">Photo de profil :</label>
+                                <div class="d-flex flex-column align-items-center">
+                                    <?php if (!empty($user['photo']) && file_exists(FCPATH . $user['photo'])): ?>
+                                        <img src="<?= base_url($user['photo']); ?>" alt="Photo de profil" class="img-thumbnail mb-3" style="max-width: 250px; max-height: 250px;">
+                                        <a href="<?= base_url('deleteUserPhoto') ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?')">Supprimer la photo</a>
+                                    <?php else: ?>
+                                        <p class="text-muted">Aucune photo disponible</p>
+                                    <?php endif; ?>
+                                </div>
 
-                        <div class="mb-3 text-center">
-                            <label class="form-label">Photo de profil :</label>
-                            <div class="d-flex flex-column align-items-center">
-                                <?php if (!empty($user['photo'])): ?>
-                                    <img src="<?= base_url($user['photo']); ?>" alt="Photo de profil" class="img-thumbnail" style="width: 150px; height: 150px; object-fit: cover; border-radius: 8px;">
-                                    <button type="button" class="btn btn-danger btn-sm mt-2">Supprimer</button>
-                                <?php else: ?>
-                                    <p class="text-muted">Aucune photo disponible</p>
-                                <?php endif; ?>
+                                <div class="mt-4 w-100">
+                                    <label for="photo" class="form-label">Changer la photo :</label>
+                                    <input type="file" class="form-control" id="photo" name="photo">
+                                </div>
                             </div>
-                        </div>
-                        
-                        <div class="mb-3">
-                            <label for="photo" class="form-label">Changer la photo :</label>
-                            <input type="file" class="form-control" id="photo" name="photo">
-                        </div>
 
-                        <div class="mb-3">
-                            <label for="nom" class="form-label">Nom :</label>
-                            <input type="text" class="form-control" id="nom" name="nom" value="<?= esc($user['nom']); ?>" required>
-                        </div>
+                            <!-- Colonne droite : informations -->
+                            <div class="col-md-8 ps-4">
+                                <div class="mb-3">
+                                    <label for="nom" class="form-label">Nom :</label>
+                                    <input type="text" class="form-control" id="nom" name="nom" value="<?= esc($user['nom']); ?>" required>
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="prenom" class="form-label">Prénom :</label>
-                            <input type="text" class="form-control" id="prenom" name="prenom" value="<?= esc($user['prenom']); ?>" required>
-                        </div>
+                                <div class="mb-3">
+                                    <label for="prenom" class="form-label">Prénom :</label>
+                                    <input type="text" class="form-control" id="prenom" name="prenom" value="<?= esc($user['prenom']); ?>" required>
+                                </div>
 
-                        <div class="mb-3">
-                            <label for="email" class="form-label">Email :</label>
-                            <input type="email" class="form-control" id="email" name="email" value="<?= esc($user['email']); ?>" required>
-                        </div>
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email :</label>
+                                    <input type="email" class="form-control" id="email" name="email" value="<?= esc($user['email']); ?>" required>
+                                </div>
 
-                        <!--Mot de Passe => récupérer mot de passe et afficher partiellement-->
-                        <div class="mb-3">
-                            <label for="motDePasse" class="form-label">Nouveau mot de passe :</label>
-                            <input type="password" class="form-control" id="motDePasse" name="motDePasse">
-                        </div>
+                                <div class="mb-3">
+                                    <label for="motDePasse" class="form-label">Nouveau mot de passe :</label>
+                                    <input type="password" class="form-control" id="motDePasse" name="motDePasse">
+                                </div>
 
-                        <!--Anonymiser option redirection pour anonymiser-->
-                        
-                        <div class="text-center">
-                            <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                <div class="text-end">
+                                    <button type="submit" class="btn btn-primary">Mettre à jour</button>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -71,7 +100,5 @@
 </div>
 
 <?= view('footer'); ?>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

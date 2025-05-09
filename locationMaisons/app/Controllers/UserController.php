@@ -6,20 +6,44 @@ use App\Models\UserModel;
 
 class UserController extends BaseController
 {
-    //Création de compte utilisateur
-    public function createAccount() {
+    // Création de compte utilisateur
+    public function createAccount() 
+        {
         $userModel = new UserModel();
 
+        // Récupération du mot de passe
         $password = $this->request->getPost('motDePasse');
+        $confirmPassword = $this->request->getPost('confirmMotDePasse'); // Récupération du mot de passe de confirmation
+
+        // Vérification que les mots de passe correspondent
+        if ($password !== $confirmPassword) {
+            return redirect()->back()->withInput()->with('error', 'Les mots de passe ne correspondent pas.');
+        }
+
+        // Vérification de la force du mot de passe
+        if (!$this->isStrongPassword($password)) {
+            return redirect()->back()->withInput()->with('error', 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+        }
+
+        // Hachage du mot de passe
         $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
 
-        $photo = $this->request->getFile('photo');
-        $photoPath = null;
+        $file = $this->request->getFile('photo');
 
-        if ($photo && $photo->isValid() && !$photo->hasMoved()) {
-            $newName = $photo->getRandomName();
-            $photo->move('uploads/', $newName);
-            $photoPath = 'uploads/' . $newName;
+        $uploadDirectory = FCPATH . 'uploads/users/';
+
+        if (!is_dir($uploadDirectory)) {
+            mkdir($uploadDirectory, 0755, true);
+        }
+
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $randomName = $file->getRandomName();
+
+            $file->move($uploadDirectory, $randomName);
+
+            $relativePath = 'uploads/users/' . $randomName;
+        } else {
+            $relativePath = '';
         }
 
         $data = [
@@ -27,7 +51,7 @@ class UserController extends BaseController
             'prenom' => $this->request->getPost('prenom'),
             'email' => $this->request->getPost('email'),
             'motDePasse' => $hashedPassword,
-            'photo' => $photoPath
+            'photo' => $relativePath
         ];
 
         $userModel->save($data);
@@ -35,8 +59,10 @@ class UserController extends BaseController
         return view('success');
     }
 
+
     //Connexion à son compte
-    public function login() {
+    public function login() 
+    {
         $session = session();
         helper(['form']);
 
@@ -58,22 +84,29 @@ class UserController extends BaseController
                     'role' => $user['role'],
                     'is_logged_in' => true
                 ]);
-                return view('personalArea');
+                return redirect()->to('personalArea');
             } else {
                 return redirect()->back()->with('error', 'Utilisateur inexistant.');
             }
         }
     }
+
     
-    //Déconnexion
-    public function logout() {
+    // Déconnexion
+    public function logout() 
+    {
         $session = session();
+        
+        // Détruire la session
         $session->destroy();
+
         return redirect()->to('/');
     }
 
-    //Afficher données de l'utilisateur
-    public function showUserInfo() {
+
+    // Afficher données de l'utilisateur pour modification du profil
+    public function showUserInfo() 
+    {
         if (!session()->has('idUtilisateur')) {
             return redirect()->to('se_connecter')->with('error', 'Veuillez vous connecter.');
         }
@@ -84,8 +117,10 @@ class UserController extends BaseController
         return view('userData', ['user' => $user]);
     }
 
-    //Modifier données de l'utilisateur
-    public function updateUserInfo() {
+
+    // Modifier les données d'un utilisateur
+    public function updateUserInfo() 
+    {
         if (!session()->has('idUtilisateur')) {
             return redirect()->to('se_connecter')->with('error', 'Veuillez vous connecter.');
         }
@@ -97,37 +132,76 @@ class UserController extends BaseController
         $newNom = $this->request->getPost('nom');
         $newPrenom = $this->request->getPost('prenom');
         $newEmail = $this->request->getPost('email');
-        $newMotDePasse = $this->request->getPost('motDePasse');
+        $newMotDePasse = trim($this->request->getPost('motDePasse'));
 
         $data = [
-            'nom' => $newNom,
+            'nom'    => $newNom,
             'prenom' => $newPrenom,
-            'email' => $newEmail
+            'email'  => $newEmail,
         ];
 
         if (!empty($newMotDePasse)) {
-            $data['passwordHash'] = password_hash($newMotDePasse, PASSWORD_BCRYPT);
+            if (!$this->isStrongPassword($newMotDePasse)) {
+                return redirect()->back()->withInput()->with('error', 'Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial.');
+            }
+
+            $data['motDePasse'] = password_hash($newMotDePasse, PASSWORD_BCRYPT);
         }
 
-        $photo = $this->request->getFile('photo');
-        if ($photo && $photo->isValid() && !$photo->hasMoved()) {
-            $newName = $photo->getRandomName();
-            $photo->move('uploads/', $newName);
-            $data['photo'] = 'uploads/' . $newName;
+        // Gérer la photo de profil
+        $file = $this->request->getFile('photo');
+        $uploadDirectory = FCPATH . 'uploads/users/';
 
-            if (!empty($user['photo']) && file_exists($user['photo'])) {
-                unlink($user['photo']);
+        if ($file && $file->isValid() && !$file->hasMoved()) {
+            $randomName = $file->getRandomName();
+            $file->move($uploadDirectory, $randomName);
+            $relativePath = 'uploads/users/' . $randomName;
+            $data['photo'] = $relativePath;
+
+            // Supprimer l'ancienne photo si elle existe
+            if (!empty($user['photo']) && file_exists(FCPATH . $user['photo'])) {
+                unlink(FCPATH . $user['photo']);
             }
         }
 
-        $userModel->update($userId, $data);
+        // Mettre à jour les données dans la base de données
+        if (!$userModel->update($userId, $data)) {
+            return redirect()->back()->withInput()->with('error', 'Erreur lors de la mise à jour des informations : ' . implode(', ', $userModel->errors()));
+        }
 
-        return redirect()->to('userData')->with('success', 'Informations mises à jour avec succès');
+        //log_message('debug', 'Mise à jour réussie pour l\'utilisateur avec l\'ID ' . $userId);
+
+        return redirect()->to('userData')->with('success', 'Informations mises à jour avec succès.');
     }
 
-    /*public function anonymise() {
 
-    }*/
+    private function isStrongPassword($password): bool
+    {
+        return preg_match('/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[\W_]).{8,}$/', $password);
+    }
+
+
+    // Suppression de la photo de l'utilisateur
+    public function deleteUserPhoto() 
+    {
+        if (!session()->has('idUtilisateur')) {
+            return redirect()->to('se_connecter')->with('error', 'Veuillez vous connecter.');
+        }
+
+        $userModel = new UserModel();
+        $userId = session()->get('idUtilisateur');
+        $user = $userModel->find($userId);
+
+        if (!empty($user['photo']) && file_exists(FCPATH . $user['photo'])) {
+            unlink(FCPATH . $user['photo']);
+            $data = ['photo' => null];
+            $userModel->update($userId, $data);
+        }
+
+        return redirect()->to('userData')->with('success', 'Photo supprimée avec succès.');
+    }
+
+
 
     //Afficher tous les utilisateurs inscrits sur la plateforme
     public function allUsers() {

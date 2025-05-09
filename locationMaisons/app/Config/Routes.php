@@ -33,6 +33,12 @@ $routes->get('/personalArea', function () {
 $routes->get('/userData', 'UserController::showUserInfo');
 $routes->post('/userData', 'UserController::updateUserInfo');
 
+$routes->get('deleteUserPhoto', 'UserController::deleteUserPhoto');
+
+//Afficher données pour espace personnel
+$routes->get('/personalAre', 'UserController::showPersonalArea');
+
+
 //-------------------------------------------------------GUESTHOUSE--------------------------------------------------
 //Créer une maison
 $routes->get('/createGuesthouse', 'GuesthouseController::showguesthouseaddpage');
@@ -52,8 +58,9 @@ $routes->post('/allGuesthouses/update/(:num)', 'GuesthouseController::updateGues
 //Route anonymiser
 $routes->get('/allGuesthouses/anonymize/(:num)', 'GuesthouseController::anonymize/$1');
 
-//Afficher la maison
-$routes->get('/detailGuesthouse', 'GuesthouseController::showDetailGuesthouse');
+//Afficher détails d'une maison
+$routes->get('guesthouse/showDetails/(:num)', 'GuesthouseController::showDetails/$1');
+
 
 //-------------------------------------------------------RESERVATION--------------------------------------------------
 $routes->get('/reserveGuesthouse', 'ReservationController::makeReservation');

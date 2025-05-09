@@ -7,6 +7,17 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <style>
+        .section-heading {
+            font-size: 1.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #ddd;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            color: #333;
+        }
         body {
             background-color: #f8f9fa;
         }
@@ -44,8 +55,8 @@
 
 <?= view('navbar'); ?>
 
-<div class="container mt-5">
-    <h1>Ajouter une Maison d'Hôte</h1>
+<div class="container mt-5 mb-5">
+    <h1 class="section-heading">Ajouter une Maison d'Hôte</h1>
 
     <!-- Affichage des messages de session (succès/erreur) -->
     <?php if (session()->getFlashdata('success')): ?>

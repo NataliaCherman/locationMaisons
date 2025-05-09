@@ -119,6 +119,7 @@
                 <div class="listing-buttons d-flex gap-2">
                     <a href="<?= base_url("/indisponibilite/{$maison['idGuesthouse']}") ?>" class="btn btn-outline-secondary btn-sm-custom">Voir les disponibilités</a>
                     <a href="<?= base_url('/reserveGuesthouse') ?>" class="btn btn-primary btn-sm-custom">Réserver</a>
+                    <a href="<?= base_url("/guesthouse/showDetails/{$maison['idGuesthouse']}") ?>" class="btn btn-info btn-sm-custom">Voir les détails</a>
                 </div>
             </div>
         <?php endforeach; ?>

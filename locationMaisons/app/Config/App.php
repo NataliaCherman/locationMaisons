@@ -6,6 +6,20 @@ use CodeIgniter\Config\BaseConfig;
 
 class App extends BaseConfig
 {
+
+// SESSION et COOKIES
+public $session = [
+    'driver'         => 'CodeIgniter\Session\Handlers\CookieHandler',  // Utiliser les cookies pour gérer la session
+    'cookieName'     => 'ci_session',  // Nom du cookie de session
+    'expiration'     => 7200,  // Durée de vie de la session en secondes (par exemple, 2 heures)
+    'savePath'       => null,  // Le chemin de stockage est nul car on utilise des cookies
+    'matchIP'        => false,  // Ne pas forcer la correspondance IP
+    'secure'         => false, // Si vous utilisez HTTPS, mettez à true
+    'httponly'       => true,  // Empêche l'accès JavaScript aux cookies
+    'samesite'       => 'Lax', // Politique SameSite pour les cookies
+];
+
+
     /**
      * --------------------------------------------------------------------------
      * Base Site URL
