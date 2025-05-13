@@ -46,7 +46,7 @@
                     <th>Attractions</th>
                     <th>Modifier</th>
                     <th>Anonymiser</th>
-                    <th>Indisponibilités</th> <!-- Nouvelle colonne pour l'indisponibilité -->
+                    <th>Indisponibilités</th>
                 </tr>
             </thead>
             <tbody></tbody>

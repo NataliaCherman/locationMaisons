@@ -18,52 +18,62 @@ class IndisponibiliteController extends BaseController
 
     public function index($idMaison)
     {
-        // On récupère la maison (facultatif si tu ne l'utilises pas dans la vue)
-        $guesthouse = $this->guesthouseModel->find($idMaison);
-    
-        // On récupère les indisponibilités associées à cette maison
+        // Récupérer la maison
+        $guesthouse = $this->guesthouseModel->find($idMaison);  // Utilisation de 'idMaison'
+
+        if (!$guesthouse) {
+            return redirect()->to('/allGuesthouses')->with('error', 'Maison introuvable');
+        }
+
+        // Récupérer les indisponibilités associées à cette maison
         $indisponibilites = $this->indisponibiliteModel
-            ->where('idMaison', $idMaison)
+            ->where('idMaison', $idMaison)  // Utilisation de 'idMaison'
             ->findAll();
-    
-        // On passe tout à la vue
+
+        // Passer tout à la vue
         return view('allIndisponibilites', [
-            'idMaison' => $idMaison,
+            'idMaison' => $idMaison,  // Utilisation de 'idMaison'
             'titre' => $guesthouse['titre'],
             'indisponibilites' => $indisponibilites
         ]);
     }
-    
+
     public function create($idMaison)
     {
-        // Charger les modèles nécessaires
-        $guesthouseModel = new GuesthouseModel();
-        $indisponibiliteModel = new IndisponibiliteModel();
-    
         // Récupérer les informations de la maison
-        $guesthouse = $guesthouseModel->find($idMaison);
+        $guesthouse = $this->guesthouseModel->find($idMaison);  // Utilisation de 'idMaison'
+
         if (!$guesthouse) {
             throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound("Maison non trouvée");
         }
-    
+
         // Récupérer les indisponibilités associées à cette maison
-        $indisponibilites = $indisponibiliteModel->where('idMaison', $idMaison)->findAll();
-    
+        $indisponibilites = $this->indisponibiliteModel->where('idMaison', $idMaison)->findAll();  // Utilisation de 'idMaison'
+
         // Passer les données à la vue
         return view('createIndisponibilite', [
-            'idMaison' => $idMaison,
+            'idMaison' => $idMaison,  // Utilisation de 'idMaison'
             'guesthouse' => $guesthouse, // Les détails de la maison
             'indisponibilites' => $indisponibilites // Les indisponibilités existantes
         ]);
     }
-    
-
 
     // Enregistre l'indisponibilité (exemple de logique POST)
     public function store()
     {
         $data = $this->request->getPost();
 
+        // Validation des données de l'indisponibilité
+        if (empty($data['idMaison']) || empty($data['motif']) || empty($data['dateDebut']) || empty($data['dateFin'])) {
+            return redirect()->back()->withInput()->with('error', 'Tous les champs sont obligatoires.');
+        }
+
+        // Vérification des dates (date de début doit être antérieure à la date de fin)
+        if (strtotime($data['dateDebut']) > strtotime($data['dateFin'])) {
+            return redirect()->back()->withInput()->with('error', 'La date de début doit être antérieure à la date de fin.');
+        }
+
+        // Enregistrement de l'indisponibilité
         $this->indisponibiliteModel->insert([
             'idMaison' => $data['idMaison'],
             'motif'    => $data['motif'],
@@ -74,21 +84,18 @@ class IndisponibiliteController extends BaseController
         return redirect()->to('/allGuesthouses')->with('success', 'Indisponibilité ajoutée');
     }
 
-
+    // Supprimer une indisponibilité
     public function delete($idIndisponibilite)
-{
-    $indisponibiliteModel = new IndisponibiliteModel();
+    {
+        // Vérifier si l'indisponibilité existe
+        $indisponibilite = $this->indisponibiliteModel->find($idIndisponibilite);
 
-    // Vérifier si l'indisponibilité existe
-    $indisponibilite = $indisponibiliteModel->find($idIndisponibilite);
-
-    if ($indisponibilite) {
-        // Suppression de l'indisponibilité
-        $indisponibiliteModel->delete($idIndisponibilite);
-        return redirect()->to('/allGuesthouses')->with('success', 'Indisponibilité supprimée avec succès.');
-    } else {
-        return redirect()->to('/allIndisponibilites')->with('error', 'Indisponibilité non trouvée.');
+        if ($indisponibilite) {
+            // Suppression de l'indisponibilité
+            $this->indisponibiliteModel->delete($idIndisponibilite);
+            return redirect()->to('/allGuesthouses')->with('success', 'Indisponibilité supprimée avec succès.');
+        } else {
+            return redirect()->to('/allIndisponibilites')->with('error', 'Indisponibilité non trouvée.');
+        }
     }
-}
-
 }

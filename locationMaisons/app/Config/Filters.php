@@ -24,6 +24,8 @@ class Filters extends BaseConfig
         'honeypot'      => Honeypot::class,
         'invalidchars'  => InvalidChars::class,
         'secureheaders' => SecureHeaders::class,
+        //Application de filtre pour utilisateur bloqué
+        'statusCheck'   => \App\Filters\UserStatusFilter::class
     ];
 
     /**
@@ -65,5 +67,18 @@ class Filters extends BaseConfig
      * Example:
      * 'isLoggedIn' => ['before' => ['account/*', 'profiles/*']]
      */
-    public array $filters = [];
+    //Modifié pour protéger contenu contre utilisateurs bloqués
+    public array $filters = ['statusCheck' => ['before' => [
+        'userData',  
+        'allGuesthouses', 
+        'allUsers', 
+        'allIndisponibilites', 
+        'createGuesthouse', 
+        'createIndisponibilite',
+        'detailGuesthouse',
+        'editGuesthouse',
+        'reserveGuesthouse',
+        'vitrineGuesthouses'
+    ]],];
+
 }

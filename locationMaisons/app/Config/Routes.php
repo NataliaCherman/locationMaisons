@@ -35,8 +35,14 @@ $routes->post('/userData', 'UserController::updateUserInfo');
 
 $routes->get('deleteUserPhoto', 'UserController::deleteUserPhoto');
 
-//Afficher données pour espace personnel
-$routes->get('/personalAre', 'UserController::showPersonalArea');
+//Anonymiser l'utilisateur
+$routes->post('/allUsers', 'UserController::anonymiser_utilisateur');
+
+//Bloquer l'utilisateur
+$routes->post('bloquer_utilisateur', 'UserController::bloquer_utilisateur');
+
+//Débloquer l'utilisateur
+$routes->post('debloquer_utilisateur', 'UserController::debloquer_utilisateur');
 
 
 //-------------------------------------------------------GUESTHOUSE--------------------------------------------------
@@ -53,6 +59,7 @@ $routes->post('/getGuesthousesData', 'GuesthouseController::getGuesthousesData')
 
 //Route pour éditer une maison
 $routes->get('/allGuesthouses/edit/(:num)', 'GuesthouseController::editGuesthouse/$1');
+
 //Route pour mettre à jour une maison
 $routes->post('/allGuesthouses/update/(:num)', 'GuesthouseController::updateGuesthouse/$1');
 //Route anonymiser

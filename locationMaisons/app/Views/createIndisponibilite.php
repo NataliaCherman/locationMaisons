@@ -17,7 +17,7 @@
     <?= view('navBar'); ?>
 
     <div class="container mt-5">
-        <h2>Créer une Indisponibilité pour la Maison : <?= esc($guesthouse['titre']) ?></h2>
+        <h2>Créer une Indisponibilité pour la maison : <?= esc($guesthouse['titre']) ?></h2>
 
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>

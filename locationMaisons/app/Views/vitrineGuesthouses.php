@@ -81,6 +81,9 @@
     <h2 class="section-heading">Consultez notre catalogue</h2>
     <div class="row">
         <?php foreach ($maisons as $maison): ?>
+            <!-- Vérifier si le titre est "anonyme" et l'exclure si c'est le cas -->
+            <?php if (isset($maison['titre']) && strtolower($maison['titre']) === 'anonyme') continue; ?>
+            
             <div class="col-md-4 listing">
                 <?php
                     $photos = json_decode($maison['photos'] ?? '[]', true);
@@ -119,7 +122,7 @@
                 <div class="listing-buttons d-flex gap-2">
                     <a href="<?= base_url("/indisponibilite/{$maison['idGuesthouse']}") ?>" class="btn btn-outline-secondary btn-sm-custom">Voir les disponibilités</a>
                     <a href="<?= base_url('/reserveGuesthouse') ?>" class="btn btn-primary btn-sm-custom">Réserver</a>
-                    <a href="<?= base_url("/guesthouse/showDetails/{$maison['idGuesthouse']}") ?>" class="btn btn-info btn-sm-custom">Voir les détails</a>
+                    <a href="<?= base_url("/guesthouse/showDetails/{$maison['idGuesthouse']}") ?>" class="btn btn-info btn-sm-custom" target="_blank">Voir les détails</a>
                 </div>
             </div>
         <?php endforeach; ?>

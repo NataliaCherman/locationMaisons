@@ -5,13 +5,27 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modifier une maison</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+
+    <style>
+        .section-heading {
+            font-size: 1.75rem;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px solid #ddd;
+            padding-top: 20px;
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            color: #333;
+        }
+    </style>
 </head>
 <body>
 
 <?= view('navbar'); ?>
 
 <div class="container mt-4">
-    <h2 class="text-center mb-4">Modifier la maison</h2>
+    <h1 class="section-heading">Modifier la maison</h2>
 
     <?php if (session()->getFlashdata('error')) : ?>
         <div class="alert alert-danger"> <?= session()->getFlashdata('error'); ?> </div>
@@ -67,9 +81,12 @@
             </div>
 
             <button type="submit" class="btn btn-primary w-100">Modifier</button>
+            <button type="button" class="btn btn-secondary w-20 mt-5" onclick="window.history.back();">Revenir en arrière</button>
         </form>
     </div>
 </div>
+
+<?= view('footer'); ?>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>

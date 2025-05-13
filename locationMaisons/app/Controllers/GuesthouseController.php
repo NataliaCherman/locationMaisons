@@ -24,6 +24,8 @@ class GuesthouseController extends BaseController
     // Ajouter une maison
     public function addguesthouse() 
     {
+        $guesthouseModel = new GuesthouseModel();
+
         $data = [
             'titre' => $this->request->getPost('titre'),
             'detail' => $this->request->getPost('detail'),
@@ -31,33 +33,39 @@ class GuesthouseController extends BaseController
             'pays' => $this->request->getPost('pays'),
             'attractions' => $this->request->getPost('attractions')
         ];
-    
+
+        if (!$guesthouseModel->checkTitleUnique($data['titre'])) {
+            return redirect()->to('/createGuesthouse')->withInput()->with('error', 'Le titre de cette maison d\'hôte est déjà utilisé.');
+        }
+
+        $validCountries = ['FR', 'IT', 'BE'];
+        if (!in_array($data['pays'], $validCountries)) {
+            return redirect()->to('/createGuesthouse')->withInput()->with('error', 'Pays invalide. Choisissez parmi FR, IT, BE.');
+        }
+
         $files = $this->request->getFiles();
         $photos = [];
-    
         $uploadDirectory = FCPATH . '/public/uploads/guesthouses/';
-    
+        
         if (!is_dir($uploadDirectory)) {
             mkdir($uploadDirectory, 0755, true);
         }
-    
+
         if (isset($files['photos'])) {
             foreach ($files['photos'] as $file) {
                 if ($file->isValid() && !$file->hasMoved()) {
                     $randomName = uniqid('guesthouse_', true) . '.' . $file->getExtension();
                     $file->move($uploadDirectory, $randomName);
-        
                     $relativePath = '/public/uploads/guesthouses/' . $randomName;
                     $photos[] = $relativePath;
                 }
             }
         }
-    
+
         if (!empty($photos)) {
             $data['photos'] = json_encode($photos);
         }
-    
-        $guesthouseModel = new GuesthouseModel();
+
         if ($guesthouseModel->insert($data)) {
             return redirect()->to('/createGuesthouse')->with('success', 'Maison ajoutée avec succès.');
         } else {
@@ -129,25 +137,24 @@ class GuesthouseController extends BaseController
     }
 
     // Editer une maison
-    public function editGuesthouse($id)
+    public function editGuesthouse($idGuesthouse)
     {
         $guesthouseModel = new GuesthouseModel();
-        $guesthouse = $guesthouseModel->find($id);
+        $guesthouse = $guesthouseModel->find($idGuesthouse);
 
         if ($guesthouse) {
-            // Récupérer les photos et les rendre accessibles dans la vue
             $photos = !empty($guesthouse['photos']) ? json_decode($guesthouse['photos'], true) : [];
 
             return view('editGuesthouse', [
                 'guesthouse' => $guesthouse,
-                'photos' => $photos // Passer les photos à la vue
+                'photos' => $photos
             ]);
         } else {
             return redirect()->to('/allGuesthouses')->with('error', 'Maison non trouvée.');
         }
     }
 
-    public function updateGuesthouse($id)
+    /*public function updateGuesthouse($id)
     {
         // Vérifier que l'utilisateur est un administrateur
         if (session()->get('role') !== 'Administrateur') {
@@ -166,13 +173,18 @@ class GuesthouseController extends BaseController
             'titre', 'detail', 'village', 'pays', 'attractions'
         ]);
 
-        // Assurez-vous que la valeur de 'pays' correspond à une des valeurs valides (FR, IT, BE)
-        $validCountries = ['FR', 'IT', 'BE'];
-        if (!in_array($data['pays'], $validCountries)) {
-            return redirect()->to('/allGuesthouses')->with('error', 'Pays invalide.');
+        // Validation de l'unicité du titre
+        if ($data['titre'] !== $guesthouse['titre'] && !$guesthouseModel->checkTitleUnique($data['titre'])) {
+            return redirect()->to('/editGuesthouse/' . $id)->withInput()->with('error', 'Le titre de cette maison d\'hôte est déjà utilisé.');
         }
 
-        // Gérer les photos
+        // Validation du pays
+        $validCountries = ['FR', 'IT', 'BE'];
+        if (!in_array($data['pays'], $validCountries)) {
+            return redirect()->to('/editGuesthouse/' . $id)->withInput()->with('error', 'Pays invalide. Choisissez parmi FR, IT, BE.');
+        }
+
+        // Gestion des photos
         $photos = $this->request->getFiles()['photos'] ?? [];
         $uploadedPaths = [];
 
@@ -198,23 +210,81 @@ class GuesthouseController extends BaseController
                 }
             }
 
-            // Mettre à jour les photos dans la base de données
             $data['photos'] = json_encode($uploadedPaths);
         }
 
-        // Mettre à jour les attractions (si elles existent)
-        if (!empty($data['attractions'])) {
-            $data['attractions'] = $data['attractions'];
-        }
-
-        // Mettre à jour la maison dans la base de données
+        // Mise à jour de la maison dans la base de données
         $guesthouseModel->update($id, $data);
 
         return redirect()->to('/allGuesthouses')->with('success', 'Maison mise à jour avec succès.');
+    }*/
+    public function updateGuesthouse($id)
+{
+    // Vérifier que l'utilisateur est un administrateur
+    if (session()->get('role') !== 'Administrateur') {
+        return redirect()->to('/allGuesthouses')->with('error', 'Accès refusé.');
     }
 
+    $guesthouseModel = new GuesthouseModel();
+    $guesthouse = $guesthouseModel->find($id);
+
+    if (!$guesthouse) {
+        return redirect()->to('/allGuesthouses')->with('error', 'Maison introuvable.');
+    }
+
+    // Récupérer les données envoyées par le formulaire
+    $data = $this->request->getPost([
+        'titre', 'detail', 'village', 'pays', 'attractions'
+    ]);
+
+    // Validation de l'unicité du titre uniquement si le titre a changé
+    if ($data['titre'] !== $guesthouse['titre'] && !$guesthouseModel->checkTitleUnique($data['titre'])) {
+        return redirect()->to('/editGuesthouse/' . $id)->withInput()->with('error', 'Le titre de cette maison d\'hôte est déjà utilisé.');
+    }
+
+    // Validation du pays
+    $validCountries = ['FR', 'IT', 'BE'];
+    if (!in_array($data['pays'], $validCountries)) {
+        return redirect()->to('/editGuesthouse/' . $id)->withInput()->with('error', 'Pays invalide. Choisissez parmi FR, IT, BE.');
+    }
+
+    // Gestion des photos (upload)
+    $photos = $this->request->getFiles()['photos'] ?? [];
+    $uploadedPaths = [];
+
+    if (!empty($photos) && is_array($photos)) {
+        foreach ($photos as $photo) {
+            if ($photo->isValid() && !$photo->hasMoved()) {
+                $newName = $photo->getRandomName();
+                $photo->move(FCPATH . 'public/uploads/guesthouses', $newName);
+                $uploadedPaths[] = 'public/uploads/guesthouses/' . $newName;
+            }
+        }
+    }
+
+    // Si de nouvelles photos ont été uploadées, supprimer les anciennes
+    if (!empty($uploadedPaths)) {
+        if (!empty($guesthouse['photos'])) {
+            $oldPhotos = json_decode($guesthouse['photos'], true);
+            foreach ($oldPhotos as $oldPath) {
+                $oldFullPath = FCPATH . $oldPath;
+                if (file_exists($oldFullPath)) {
+                    unlink($oldFullPath);
+                }
+            }
+        }
+
+        $data['photos'] = json_encode($uploadedPaths);
+    }
+
+    // Désactiver la validation automatique du modèle pour éviter le blocage sur le champ titre
+    $guesthouseModel->skipValidation(true)->update($id, $data);
+
+    return redirect()->to('/allGuesthouses')->with('success', 'Maison mise à jour avec succès.');
+}
 
 
+    // Anonymiser les données d'une maison
     public function anonymize($id)
     {
         $model = new \App\Models\GuesthouseModel();
@@ -233,27 +303,17 @@ class GuesthouseController extends BaseController
         ];
 
         // Supprimer l'image physique si elle existe
-        if (!empty($guesthouse['photos']) && file_exists(FCPATH . $guesthouse['photos'])) {
-            unlink(FCPATH . $guesthouse['photos']);
+        if (!empty($guesthouse['photos']) && is_array(json_decode($guesthouse['photos'], true))) {
+            $photos = json_decode($guesthouse['photos'], true);
+            foreach ($photos as $photo) {
+                if (file_exists(FCPATH . $photo)) {
+                    unlink(FCPATH . $photo);
+                }
+            }
         }
-
-        $data['photos'] = null;
 
         $model->update($id, $data);
 
         return redirect()->to('/allGuesthouses')->with('success', 'Maison anonymisée avec succès.');
-    }
-
-    public function showDetails($idGuesthouse)
-    {
-        $model = new GuesthouseModel();
-        
-        // Récupérer la maison à partir de l'ID
-        $maison = $model->find($idGuesthouse);
-
-        // Retourner la vue avec les données nécessaires
-        return view('detailGuesthouse', [
-            'maison' => $maison
-        ]);
     }
 }

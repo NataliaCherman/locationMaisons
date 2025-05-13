@@ -4,21 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Informations utilisateur</title>
+    <link rel="stylesheet" href="<?= base_url('/public/assets/css/style.css') ?>">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <style>
-        .section-heading {
-            font-size: 1.75rem;
-            font-weight: 500;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            border-bottom: 1px solid #ddd;
-            padding-top: 20px;
-            padding-bottom: 10px;
-            margin-bottom: 30px;
-            color: #333;
-        }
-    </style>
 </head>
 <body>
 <?= view('navBar'); ?>
@@ -49,11 +37,17 @@
                             <div class="col-md-4 text-center border-end">
                                 <label class="form-label">Photo de profil :</label>
                                 <div class="d-flex flex-column align-items-center">
-                                    <?php if (!empty($user['photo']) && file_exists(FCPATH . $user['photo'])): ?>
-                                        <img src="<?= base_url($user['photo']); ?>" alt="Photo de profil" class="img-thumbnail mb-3" style="max-width: 250px; max-height: 250px;">
+                                    <?php
+                                        $photoExists = !empty($user['photo']) && file_exists(FCPATH . $user['photo']);
+                                        $photoPath = $photoExists
+                                            ? base_url($user['photo'])
+                                            : base_url('uploads/users/defaut.png');
+                                    ?>
+
+                                    <img src="<?= $photoPath ?>" alt="Photo de profil" class="img-thumbnail mb-3" style="max-width: 250px; max-height: 250px;">
+
+                                    <?php if ($photoExists): ?>
                                         <a href="<?= base_url('deleteUserPhoto') ?>" class="btn btn-danger btn-sm" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette photo ?')">Supprimer la photo</a>
-                                    <?php else: ?>
-                                        <p class="text-muted">Aucune photo disponible</p>
                                     <?php endif; ?>
                                 </div>
 
