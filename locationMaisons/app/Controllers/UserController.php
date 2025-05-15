@@ -46,6 +46,16 @@ class UserController extends BaseController
         }
     }
 
+    public function personalArea()
+{
+    $userModel = new \App\Models\UserModel();
+    $userId = session()->get('idUtilisateur');
+    $user = $userModel->find($userId);
+
+    return view('personalArea', ['user' => $user]);
+}
+
+
     public function logout()
     {
         session()->destroy();

@@ -47,6 +47,7 @@
                     <th>Modifier</th>
                     <th>Anonymiser</th>
                     <th>Indisponibilités</th>
+                    <th>Réservations</th>
                 </tr>
             </thead>
             <tbody></tbody>
@@ -103,6 +104,12 @@
                     data: "idGuesthouse",
                     render: function(data) {
                         return `<a href="<?= base_url('indisponibilite') ?>/${data}/create" class="btn btn-info btn-sm">Gérer les indisponibilités</a>`;
+                    }
+                },
+                {
+                    data: "idGuesthouse",
+                    render: function(data) {
+                        return `<a href="<?= base_url('reservation/maison') ?>/${data}/admin" class="btn btn-secondary btn-sm">Réservations</a>`;
                     }
                 }
             ]

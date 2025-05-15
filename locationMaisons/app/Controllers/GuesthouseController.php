@@ -316,4 +316,30 @@ class GuesthouseController extends BaseController
 
         return redirect()->to('/allGuesthouses')->with('success', 'Maison anonymisée avec succès.');
     }
+
+    // Filtre AJAX pour le catalogue par pays
+    public function filter()
+    {
+        $pays = $this->request->getGet('pays');
+        $model = new \App\Models\GuesthouseModel();
+
+        $maisons = !empty($pays)
+            ? $model->where('pays', $pays)->findAll()
+            : $model->findAll();
+
+        return view('partials/guesthousesList', ['maisons' => $maisons]);
+    }
+
+    public function showDetails($id)
+{
+    $model = new \App\Models\GuesthouseModel();
+    $maison = $model->find($id);
+
+    if (!$maison) {
+        throw \CodeIgniter\Exceptions\PageNotFoundException::forPageNotFound('Maison non trouvée');
+    }
+
+    return view('detailGuesthouse', ['maison' => $maison]);
+}
+
 }

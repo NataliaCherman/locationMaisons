@@ -4,12 +4,13 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class ReservationModels extends Model
+class ReservationModel extends Model
 {
-    protected $table = 'reservation';
+    protected $table = 'Reservation';
     protected $primaryKey = 'idReservation';
     protected $returnType = 'array';
-    protected $allowedFields = ['idGuesthouse', 'idUtilisateur', 'dateDebut', 'dateFin', 'statut'];
+    protected $allowedFields = [
+        'idMaison', 'idUtilisateur', 'dateDebut', 'dateFin', 'statut',
+        'datePaiementPrévu', 'paiementEffectué', 'prix'
+    ];
 }
-
-//A modifier encore

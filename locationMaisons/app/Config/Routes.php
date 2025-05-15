@@ -68,9 +68,27 @@ $routes->get('/allGuesthouses/anonymize/(:num)', 'GuesthouseController::anonymiz
 //Afficher détails d'une maison
 $routes->get('guesthouse/showDetails/(:num)', 'GuesthouseController::showDetails/$1');
 
+//Filtre AJAX pour le catalogue par pays
+$routes->get('guesthouses/filter', 'GuesthouseController::filter');
 
 //-------------------------------------------------------RESERVATION--------------------------------------------------
-$routes->get('/reserveGuesthouse', 'ReservationController::makeReservation');
+// ADMIN
+$routes->get('reservation/marquerPaiementEffectue/(:num)', 'ReservationController::marquerPaiementEffectue/$1');
+$routes->get('reservation/verifierPaiement', 'ReservationController::verifierPaiementNonEffectue');
+$routes->get('reservation/maison/(:num)/admin', 'ReservationController::adminMaisonReservations/$1');
+
+// UTILISATEUR
+$routes->get('reservation/signalerPaiement/(:num)', 'ReservationController::signalerPaiement/$1');
+$routes->get('reservation/maison/(:num)', 'ReservationController::showReservationForm/$1');
+$routes->post('reservation/create', 'ReservationController::createReservation');
+
+
+$routes->post('reservation/calculerPrix', 'ReservationController::calculerPrixAjax');
+
+//------------------------------------------------------SAISONS--------------------------------------------------------
+$routes->get('saison/generer', 'SaisonController::genererSaisons2Ans');
+//a mettre dans le navigateur : http://localhost/locationMaisons/saison/generer (réponse : Saisons générées avec succès pour les maisons existantes !)
+
 
 //-------------------------------------------------------INDISPONIBILITE--------------------------------------------------
 // Affiche l'indisponibilité de la maison

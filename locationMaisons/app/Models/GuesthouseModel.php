@@ -6,7 +6,7 @@ class GuesthouseModel extends Model
     protected $table = 'Guesthouses';
     protected $primaryKey = 'idGuesthouse';
     protected $returnType = 'array';
-    protected $allowedFields = ['titre', 'detail', 'village', 'pays', 'photos', 'attractions'];
+    protected $allowedFields = ['titre', 'detail', 'village', 'pays', 'photos', 'attractions','prixParNuit'];
 
     // Méthode pour vérifier l'unicité du titre avant d'ajouter une maison d'hôte
     public function checkTitleUnique($title)
