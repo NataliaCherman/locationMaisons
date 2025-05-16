@@ -1,6 +1,7 @@
 <?php namespace App\Models;
 
 use CodeIgniter\Model;
+use App\Models\ReservationModel;
 
 class IndisponibiliteModel extends Model
 {
@@ -36,4 +37,48 @@ class IndisponibiliteModel extends Model
             'valid_date' => 'La date de fin doit être une date valide.',
         ],
     ];
+
+    /*public function isMaisonDisponible($idMaison, $dateDebut, $dateFin)
+    {
+        return !$this->where('idMaison', $idMaison)
+                    ->groupStart()
+                        ->where('dateDebut <=', $dateFin)
+                        ->where('dateFin >=', $dateDebut)
+                    ->groupEnd()
+                    ->first();
+    }*/
+
+    public function isMaisonDisponible(int $idMaison, string $dateDebut, string $dateFin): bool
+    {
+        // Vérifier les indisponibilités
+        $indispoCount = $this->where('idMaison', $idMaison)
+            ->groupStart()
+                ->where('dateDebut <=', $dateFin)
+                ->where('dateFin >=', $dateDebut)
+            ->groupEnd()
+            ->countAllResults();
+
+        if ($indispoCount > 0) {
+            return false;
+        }
+
+        // Charger le modèle Reservation
+        $reservationModel = new ReservationModel();
+
+        // Vérifier les réservations confirmées ou en attente
+        $reservationCount = $reservationModel->where('idMaison', $idMaison)
+            ->whereIn('statut', ['Confirmée', 'En attente'])
+            ->groupStart()
+                ->where('dateDebut <=', $dateFin)
+                ->where('dateFin >=', $dateDebut)
+            ->groupEnd()
+            ->countAllResults();
+
+        if ($reservationCount > 0) {
+            return false;
+        }
+
+        return true;
+    }
+
 }

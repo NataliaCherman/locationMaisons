@@ -126,7 +126,7 @@
 
                 <!-- Book Button -->
                 <div class="text-center">
-                    <a href="#" class="btn btn-primary">Réserver Maintenant</a>
+                    <a href="<?= base_url('reservationForm') ?>" class="btn btn-primary">Réserver Maintenant</a>
                 </div>
             </div>
         </div>

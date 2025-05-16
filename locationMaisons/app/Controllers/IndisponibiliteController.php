@@ -59,7 +59,7 @@ class IndisponibiliteController extends BaseController
     }
 
     // Enregistre l'indisponibilité (exemple de logique POST)
-    public function store()
+    /*public function store()
     {
         $data = $this->request->getPost();
 
@@ -82,7 +82,31 @@ class IndisponibiliteController extends BaseController
         ]);
 
         return redirect()->to('/allGuesthouses')->with('success', 'Indisponibilité ajoutée');
+    }*/
+    public function store()
+{
+    $data = $this->request->getPost();
+
+    // Validation avec le modèle (tu as déjà défini les règles dans ton modèle IndisponibiliteModel)
+    if (!$this->indisponibiliteModel->validate($data)) {
+        // La validation a échoué, récupérer les erreurs
+        $errors = $this->indisponibiliteModel->errors();
+
+        // Rediriger vers le formulaire en gardant les données saisies + erreurs
+        return redirect()->back()->withInput()->with('errors', $errors);
     }
+
+    // Vérification complémentaire dateDebut < dateFin
+    if (strtotime($data['dateDebut']) > strtotime($data['dateFin'])) {
+        return redirect()->back()->withInput()->with('error', 'La date de début doit être antérieure à la date de fin.');
+    }
+
+    // Enregistrement dans la base
+    $this->indisponibiliteModel->insert($data);
+
+    return redirect()->to('/allGuesthouses')->with('success', 'Indisponibilité ajoutée');
+}
+
 
     // Supprimer une indisponibilité
     public function delete($idIndisponibilite)

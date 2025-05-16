@@ -40,8 +40,10 @@
 
 <?= view('footer'); ?>
 
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
 $(document).ready(function() {
+    // Fonction pour mettre à jour le prix automatiquement
     function majPrix() {
         let idMaison = $('input[name="idMaison"]').val();
         let dateDebut = $('#dateDebut').val();
@@ -69,8 +71,10 @@ $(document).ready(function() {
         }
     }
 
+    // Mise à jour du prix à chaque changement de date
     $('#dateDebut, #dateFin').on('change', majPrix);
 
+    // Gestion de la soumission du formulaire en AJAX
     $('#reservationForm').submit(function(e) {
         e.preventDefault();
 
@@ -81,20 +85,36 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.success) {
-                    $('#alertMsg').html('<div class="alert alert-success">' + response.message + '</div>');
+                    $('#alertMsg').html('<div class="alert alert-success alert-dismissible fade show" role="alert">' 
+                        + response.message 
+                        + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+                        + '</div>');
                     $('#reservationForm')[0].reset();
                     $('#prix').val('0,00');
                 } else {
-                    $('#alertMsg').html('<div class="alert alert-danger">' + response.message + '</div>');
+                    $('#alertMsg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' 
+                        + response.message 
+                        + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+                        + '</div>');
                 }
             },
-            error: function() {
-                $('#alertMsg').html('<div class="alert alert-danger">Une erreur est survenue, veuillez réessayer.</div>');
+            error: function(jqXHR) {
+                let response = {};
+                try {
+                    response = JSON.parse(jqXHR.responseText);
+                } catch(e) {
+                    response.message = 'Erreur inconnue';
+                }
+                $('#alertMsg').html('<div class="alert alert-danger alert-dismissible fade show" role="alert">' 
+                    + (response.message || 'Erreur serveur') 
+                    + '<button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>'
+                    + '</div>');
             }
         });
     });
 });
 </script>
+
 
 </body>
 </html>

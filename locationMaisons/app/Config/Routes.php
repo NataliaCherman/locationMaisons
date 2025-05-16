@@ -80,10 +80,14 @@ $routes->get('reservation/maison/(:num)/admin', 'ReservationController::adminMai
 // UTILISATEUR
 $routes->get('reservation/signalerPaiement/(:num)', 'ReservationController::signalerPaiement/$1');
 $routes->get('reservation/maison/(:num)', 'ReservationController::showReservationForm/$1');
+//Création d'une réservation via formulaire
 $routes->post('reservation/create', 'ReservationController::createReservation');
 
 
 $routes->post('reservation/calculerPrix', 'ReservationController::calculerPrixAjax');
+
+$routes->get('reservation/datesBloquees/(:num)', 'ReservationController::datesBloquees/$1');
+
 
 //------------------------------------------------------SAISONS--------------------------------------------------------
 $routes->get('saison/generer', 'SaisonController::genererSaisons2Ans');
@@ -93,6 +97,7 @@ $routes->get('saison/generer', 'SaisonController::genererSaisons2Ans');
 //-------------------------------------------------------INDISPONIBILITE--------------------------------------------------
 // Affiche l'indisponibilité de la maison
 $routes->get('indisponibilite/(:num)', 'IndisponibiliteController::index/$1');
+//On va essayer d'intégrer à la page de réservation
 
 // Affiche le formulaire de création d'indisponibilité
 $routes->get('indisponibilite/(:num)/create', 'IndisponibiliteController::create/$1');

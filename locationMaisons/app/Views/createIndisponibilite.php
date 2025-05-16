@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Créer une Indisponibilité</title>
+    
+    <link rel="stylesheet" href="<?= base_url('/public/assets/css/style.css') ?>">
 
     <script>
         // Fonction pour mettre à jour la date minimale
@@ -17,19 +19,15 @@
     <?= view('navBar'); ?>
 
     <div class="container mt-5">
-        <h2>Créer une Indisponibilité pour la maison : <?= esc($guesthouse['titre']) ?></h2>
+        <h1 class="section-heading">Créer une Indisponibilité pour la maison : <?= esc($guesthouse['titre']) ?></h1>
 
         <?php if (session()->getFlashdata('success')): ?>
             <div class="alert alert-success"><?= session()->getFlashdata('success') ?></div>
         <?php endif; ?>
 
-        <?php if (session()->getFlashdata('errors')): ?>
+        <?php if (session()->getFlashdata('error')): ?>
             <div class="alert alert-danger">
-                <ul>
-                    <?php foreach (session()->getFlashdata('errors') as $error): ?>
-                        <li><?= esc($error) ?></li>
-                    <?php endforeach; ?>
-                </ul>
+                <?= esc(session()->getFlashdata('error')) ?>
             </div>
         <?php endif; ?>
 
@@ -38,17 +36,26 @@
 
             <div class="mb-3">
                 <label for="motif" class="form-label">Motif</label>
-                <input type="text" class="form-control" id="motif" name="motif" required>
+                <input type="text" class="form-control" id="motif" name="motif" required value="<?= old('motif') ?>">
+                <?php if (session()->getFlashdata('errors')['motif'] ?? false): ?>
+                    <div class="text-danger mt-1"><?= esc(session()->getFlashdata('errors')['motif']) ?></div>
+                <?php endif; ?>
             </div>
 
             <div class="mb-3">
                 <label for="dateDebut" class="form-label">Date de début</label>
-                <input type="date" class="form-control" id="dateDebut" name="dateDebut" required>
+                <input type="date" class="form-control" id="dateDebut" name="dateDebut" required value="<?= old('dateDebut') ?>">
+                <?php if (session()->getFlashdata('errors')['dateDebut'] ?? false): ?>
+                    <div class="text-danger mt-1"><?= esc(session()->getFlashdata('errors')['dateDebut']) ?></div>
+                <?php endif; ?>
             </div>
 
             <div class="mb-3">
                 <label for="dateFin" class="form-label">Date de fin</label>
-                <input type="date" class="form-control" id="dateFin" name="dateFin" required>
+                <input type="date" class="form-control" id="dateFin" name="dateFin" required value="<?= old('dateFin') ?>">
+                <?php if (session()->getFlashdata('errors')['dateFin'] ?? false): ?>
+                    <div class="text-danger mt-1"><?= esc(session()->getFlashdata('errors')['dateFin']) ?></div>
+                <?php endif; ?>
             </div>
 
             <button type="submit" class="btn btn-success">Créer l'indisponibilité</button>
